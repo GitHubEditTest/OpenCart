@@ -461,6 +461,10 @@ class ModelCheckoutOrder extends Model {
 				$order_option_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "order_option WHERE order_id = '" . (int)$order_id . "' AND order_product_id = '" . $product['order_product_id'] . "'");
 				
 				foreach ($order_option_query->rows as $option) {
+					// display correct filename
+					if ($option['type'] == 'file') {
+						$option['value'] = utf8_substr($option['value'], 0, utf8_strrpos($option['value'], '.'));
+					}
 					$text .= chr(9) . '-' . $option['name'] . ' ' . (utf8_strlen($option['value']) > 20 ? utf8_substr($option['value'], 0, 20) . '..' : $option['value']) . "\n";
 				}
 			}
